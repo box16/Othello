@@ -15,13 +15,14 @@ class Board:
         self._set_initial_position()
 
     def _set_initial_position(self) -> None:
+        # ここはドメインサービスに移設してもいいかもしれない
         half = int(self.size / 2)
-        self.set_piece(Position(half - 1, half), PieceState.PLAYER1)
-        self.set_piece(Position(half, half - 1), PieceState.PLAYER1)
-        self.set_piece(Position(half, half), PieceState.PLAYER2)
-        self.set_piece(Position(half - 1, half - 1), PieceState.PLAYER2)
+        self.place_piece(Position(half - 1, half), PieceState.PLAYER1)
+        self.place_piece(Position(half, half - 1), PieceState.PLAYER1)
+        self.place_piece(Position(half, half), PieceState.PLAYER2)
+        self.place_piece(Position(half - 1, half - 1), PieceState.PLAYER2)
 
-    def set_piece(self, pos: Position, state: PieceState):
+    def place_piece(self, pos: Position, state: PieceState):
         if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
             raise InvalidPositionError("ボードの範囲外です")
 
