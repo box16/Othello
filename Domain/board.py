@@ -25,4 +25,4 @@ class Board:
         if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
             raise InvalidPositionError("ボードの範囲外です")
 
-        self.pieces[pos.x][pos.y].put(state)
+        self.pieces[pos.x][pos.y].place(state)

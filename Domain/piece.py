@@ -15,7 +15,7 @@ class Piece:
     def __init__(self):
         self.state = PieceState.EMPTY
 
-    def put(self, state: PieceState) -> None:
+    def place(self, state: PieceState) -> None:
         if self.state != PieceState.EMPTY:
             raise InvalidStateError("既にコマが置かれています")
         if state not in {PieceState.PLAYER1, PieceState.PLAYER2}:
