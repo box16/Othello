@@ -11,7 +11,7 @@ class Board:
         self.size = size
         self.pieces = [[Piece() for j in range(self.size)] for i in range(self.size)]
         self.TOP_LEFT = Position(0, 0)
-        self.BOTTOM_RIGHT = Position(self.size, self.size)
+        self.BOTTOM_RIGHT = Position(self.size - 1, self.size - 1)
         self._set_initial_position()
 
     def _set_initial_position(self) -> None:
