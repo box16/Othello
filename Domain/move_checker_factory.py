@@ -68,7 +68,7 @@ class OpponentPiecesAreFlanked(IRule):
             check_pos = position + (direction * length)
             if board.is_empty(check_pos):
                 return False
-            if board.is_piece_state(move.piece_state):
+            if board.is_piece_state(check_pos, move.piece_state):
                 return True
             length += 1
 
