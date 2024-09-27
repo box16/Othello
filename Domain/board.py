@@ -13,8 +13,20 @@ class Board:
         self.TOP_LEFT = Position(0, 0)
         self.BOTTOM_RIGHT = Position(self.size - 1, self.size - 1)
 
-    def place_piece(self, pos: Position, state: PieceState):
+    def place_piece(self, pos: Position, state: PieceState) -> None:
         if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
             raise InvalidPositionError("ボードの範囲外です")
 
         self.pieces[pos.x][pos.y].place(state)
+
+    def is_empty(self, pos: Position) -> bool:
+        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
+            raise InvalidPositionError("ボードの範囲外です")
+
+        return self.pieces[pos.x][pos.y].is_empty()
+
+    def is_piece_state(self, pos: Position, state: PieceState) -> bool:
+        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
+            raise InvalidPositionError("ボードの範囲外です")
+
+        return self.pieces[pos.x][pos.y].is_piece_state(state)

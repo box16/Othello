@@ -6,6 +6,14 @@ class PieceState(Enum):
     PLAYER1 = "BLACK"
     PLAYER2 = "WHITE"
 
+    def opponent(self):
+        if self == PieceState.PLAYER1:
+            return PieceState.PLAYER2
+        elif self == PieceState.PLAYER2:
+            return PieceState.PLAYER1
+        else:
+            return PieceState.EMPTY
+
 
 class InvalidStateError(Exception):
     pass
@@ -35,3 +43,6 @@ class Piece:
 
     def is_empty(self) -> bool:
         return self.state == PieceState.EMPTY
+
+    def is_piece_state(self, state: PieceState) -> bool:
+        return self.state == state
