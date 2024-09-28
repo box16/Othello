@@ -1,25 +1,60 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Tuple
 from dataclasses import dataclass
 from .position import Position
-from .piece import PieceState, InvalidStateError
+from .piece import Player
 from .board import Board
+from .direction import Direction
 
 
 @dataclass(frozen=True)
 class Move:
-    position: Position
-    piece_state: PieceState
-    board: Board
+    pos_can_place: Position
+    flippable_directions: Tuple[Direction]
 
     def __post_init__(self):
-        if self.piece_state == PieceState.EMPTY:
-            raise InvalidStateError("空のピースを置くことはできません")
+        object.__setattr__(
+            self, "flippable_directions", tuple(self.flippable_directions)
+        )
+
+    def __eq__(self, other: "Move"):
+        if not isinstance(other, Move):
+            return False
+        return (self.pos_can_place == other.pos_can_place) and set(
+            self.flippable_directions
+        ) == set(other.flippable_directions)
+
+
+@dataclass(frozen=True)
+class PossibleMoves:
+    moves: Tuple[Move]
+
+    def __post_init__(self):
+        object.__setattr__(self, "moves", tuple(self.moves))
+
+    def __bool__(self):
+        return len(self.moves) != 0
+
+    def __iter__(self):
+        return iter(self.moves)
+
+    def __eq__(self, other: "PossibleMoves"):
+        if not isinstance(other, PossibleMoves):
+            return False
+        return set(self.moves) == set(other.moves)
+
+
+@dataclass(frozen=True)
+class BoardState:
+    board: Board
+    player: Player
 
 
 class IRule(ABC):
     @abstractmethod
-    def is_valid(self, move: Move) -> bool:
+    def get_possible_moves(
+        self, board_state: BoardState, possible_moves: PossibleMoves
+    ) -> PossibleMoves:
         pass
 
 
@@ -27,8 +62,10 @@ class MoveChecker:
     def __init__(self, rules: List[IRule]) -> None:
         self.rules = rules
 
-    def is_valid(self, move: Move) -> bool:
+    def get_possible_moves(self, board_state: BoardState) -> PossibleMoves:
+        possible_moves: PossibleMoves = PossibleMoves([])
         for rule in self.rules:
-            if not rule.is_valid(move):
-                return False
-        return True
+            possible_moves = rule.get_possible_moves(board_state, possible_moves)
+            if not possible_moves:
+                return PossibleMoves()
+        return possible_moves

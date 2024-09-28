@@ -1,18 +1,18 @@
 from enum import Enum
 
 
-class PieceState(Enum):
+class Player(Enum):
     EMPTY = "GREEN"
-    PLAYER1 = "BLACK"
-    PLAYER2 = "WHITE"
+    FIRST = "BLACK"
+    SECOND = "WHITE"
 
     def opponent(self):
-        if self == PieceState.PLAYER1:
-            return PieceState.PLAYER2
-        elif self == PieceState.PLAYER2:
-            return PieceState.PLAYER1
+        if self == Player.FIRST:
+            return Player.SECOND
+        elif self == Player.SECOND:
+            return Player.FIRST
         else:
-            return PieceState.EMPTY
+            return Player.EMPTY
 
 
 class InvalidStateError(Exception):
@@ -21,28 +21,24 @@ class InvalidStateError(Exception):
 
 class Piece:
     def __init__(self):
-        self.state = PieceState.EMPTY
+        self.state = Player.EMPTY
 
-    def place(self, state: PieceState) -> None:
-        if self.state != PieceState.EMPTY:
+    def place(self, state: Player) -> None:
+        if self.state != Player.EMPTY:
             raise InvalidStateError("既にコマが置かれています")
-        if state not in {PieceState.PLAYER1, PieceState.PLAYER2}:
+        if state not in {Player.FIRST, Player.SECOND}:
             raise InvalidStateError("設定可能な値ではありません")
 
         self.state = state
 
     def flip(self) -> None:
-        if self.state == PieceState.EMPTY:
+        if self.state == Player.EMPTY:
             raise InvalidStateError("空のピースは反転できません")
 
-        self.state = (
-            PieceState.PLAYER2
-            if self.state == PieceState.PLAYER1
-            else PieceState.PLAYER1
-        )
+        self.state = Player.SECOND if self.state == Player.FIRST else Player.FIRST
 
     def is_empty(self) -> bool:
-        return self.state == PieceState.EMPTY
+        return self.state == Player.EMPTY
 
-    def is_piece_state(self, state: PieceState) -> bool:
+    def is_piece_state(self, state: Player) -> bool:
         return self.state == state

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from .direction import Direction
 
 
 @dataclass(frozen=True)
@@ -7,14 +8,14 @@ class Position:
     y: int
 
     def __add__(self, other) -> "Position":
-        if not isinstance(other, Position):
-            raise TypeError("Positionを入力してください")
+        if not isinstance(other, (Position, Direction)):
+            raise TypeError("PositionかDirectionを入力してください")
 
         return Position(self.x + other.x, self.y + other.y)
 
     def __mul__(self, scalar) -> "Position":
-        if not isinstance(scalar, (int, float)):
-            raise TypeError("intもしくはfloatを入力してください")
+        if not isinstance(scalar, int):
+            raise TypeError("intを入力してください")
 
         return Position(self.x * scalar, self.y * scalar)
 

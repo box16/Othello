@@ -1,6 +1,8 @@
-from .move_checker import Move, IRule, MoveChecker
+from .move_checker import Move, PossibleMoves, IRule, MoveChecker, BoardState
 from .position import Position
-from .piece import PieceState
+from .direction import Direction
+from .board import InvalidPositionError
+from typing import List
 
 """
 1. 置こうとしている場所が空である事
@@ -10,67 +12,84 @@ from .piece import PieceState
 
 
 class Empty(IRule):
-    def is_valid(self, move: Move) -> bool:
-        board = move.board
-        position = move.position
-        return board.is_empty(position)
+    def get_possible_moves(
+        self, board_state: BoardState, possible_moves: PossibleMoves
+    ) -> PossibleMoves:
+        result: List[Move] = []
+        size = board_state.board.get_size()
+        all_pos = [Position(i, j) for i in range(size) for j in range(size)]
+        for pos in all_pos:
+            if board_state.board.is_empty(pos):
+                result.append(Move(pos, ()))
+        return PossibleMoves(result)
 
 
 class OpponentPieceAround(IRule):
-    AROUND = [
-        Position(-1, -1),
-        Position(0, -1),
-        Position(1, -1),
-        Position(-1, 0),
-        Position(1, 0),
-        Position(-1, 1),
-        Position(0, 1),
-        Position(1, 1),
+    DIRECTIONS = [
+        Direction(-1, -1),
+        Direction(0, -1),
+        Direction(1, -1),
+        Direction(-1, 0),
+        Direction(1, 0),
+        Direction(-1, 1),
+        Direction(0, 1),
+        Direction(1, 1),
     ]
 
-    def is_valid(self, move: Move) -> bool:
-        board = move.board
-        position = move.position
-        opponent = move.piece_state.opponent()
-        for around in self.AROUND:
-            if board.is_piece_state(position + around, opponent):
-                return True
-        return False
+    def get_possible_moves(
+        self, board_state: BoardState, possible_moves: PossibleMoves
+    ) -> PossibleMoves:
+        result: List[Move] = []
+        for move in possible_moves:
+            valid_directions = self._check_direction(board_state, move)
+            if not valid_directions:
+                continue
+            result.append(Move(move.pos_can_place, valid_directions))
+        return PossibleMoves(result)
+
+    def _check_direction(self, board_state: BoardState, move: Move):
+        valid_directions = []
+        for direction in self.DIRECTIONS:
+            try:
+                if board_state.board.is_piece_state(
+                    move.pos_can_place + direction, board_state.player.opponent()
+                ):
+                    valid_directions.append(direction)
+            except InvalidPositionError:
+                continue
+        return valid_directions
 
 
 class OpponentPiecesAreFlanked(IRule):
-    AROUND = [
-        Position(-1, -1),
-        Position(0, -1),
-        Position(1, -1),
-        Position(-1, 0),
-        Position(1, 0),
-        Position(-1, 1),
-        Position(0, 1),
-        Position(1, 1),
-    ]
+    def get_possible_moves(
+        self, board_state: BoardState, possible_moves: PossibleMoves
+    ) -> PossibleMoves:
 
-    def is_valid(self, move: Move) -> bool:
-        board = move.board
-        position = move.position
-        for around in self.AROUND:
-            if board.is_empty(position + around):
+        result: List[Move] = []
+        for move in possible_moves:
+            valid_directions = []
+            for direction in move.flippable_directions:
+                if self._check_direction(board_state, move.pos_can_place, direction):
+                    valid_directions.append(direction)
+            if not valid_directions:
                 continue
-            if board.is_piece_state(position + around, move.piece_state):
-                continue
-            return self._check_direction(around, move)
+            result.append(Move(move.pos_can_place, valid_directions))
+        return PossibleMoves(result)
 
-    def _check_direction(self, direction: Position, move: Move) -> bool:
-        length = 1
-        board = move.board
-        position = move.position
+    def _check_direction(
+        self, board_state: BoardState, base_pos: Position, direction: Direction
+    ):
+        scalar = 1
         while True:
-            check_pos = position + (direction * length)
-            if board.is_empty(check_pos):
+            try:
+                check_pos = base_pos + (direction * scalar)
+                if board_state.board.is_empty(check_pos):
+                    return False
+                if board_state.board.is_piece_state(check_pos, board_state.player):
+                    return True
+                scalar += 1
+            except InvalidPositionError:
                 return False
-            if board.is_piece_state(check_pos, move.piece_state):
-                return True
-            length += 1
 
 
 def create_common_checker():
