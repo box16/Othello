@@ -1,7 +1,7 @@
-from .board import Board
-from .position import Position
-from .player import Player
-from .move_checker import MoveChecker, PossibleMoves, BoardState
+from .Board.board import Board
+from .Utility.position import Position
+from .Utility.player import Player
+from .MoveCheck.move_checker import MoveChecker, PossibleMoves, BoardState
 
 
 class BoardService:

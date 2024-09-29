@@ -1,11 +1,11 @@
 import unittest
-from .. import factory
-from ..board import Board
-from ..board_service import BoardService
-from ..move_checker import Move, PossibleMoves
-from ..position import Position
-from ..player import Player
-from ..direction import Direction
+from . import factory
+from .Board.board import Board
+from .board_service import BoardService
+from .MoveCheck.move_checker import Move, PossibleMoves
+from .Utility.position import Position
+from .Utility.player import Player
+from .Utility.direction import Direction
 
 """
 初期配置

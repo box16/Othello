@@ -1,7 +1,7 @@
-from .move_checker import Move, PossibleMoves, IRule, MoveChecker, BoardState
-from .position import Position
-from .direction import Direction
-from .board import InvalidPositionError
+from .move_checker import Move, PossibleMoves, IRule, BoardState
+from ..Utility.position import Position
+from ..Utility.direction import Direction
+from ..Board.board import InvalidPositionError
 from typing import List
 
 """

@@ -1,8 +1,8 @@
-from .player import Player
+from .Utility.player import Player
 from .board_service import BoardService
 from enum import Enum
 from dataclasses import dataclass
-from .position import Position
+from .Utility.position import Position
 
 
 class GameState(Enum):

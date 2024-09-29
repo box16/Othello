@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import List, Tuple
 from dataclasses import dataclass
-from .position import Position
-from .player import Player
-from .board import Board
-from .direction import Direction
+from ..Utility.position import Position
+from ..Utility.player import Player
+from ..Board.board import Board
+from ..Utility.direction import Direction
 
 
 @dataclass(frozen=True)

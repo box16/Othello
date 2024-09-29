@@ -1,10 +1,10 @@
-from .move_check_rules import (
+from .MoveCheck.move_check_rules import (
     Empty,
     OpponentPieceAround,
     OpponentPiecesAreFlanked,
-    MoveChecker,
 )
-from .board import Board
+from .MoveCheck.move_checker import MoveChecker
+from .Board.board import Board
 from .board_service import BoardService
 
 

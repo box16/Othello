@@ -1,6 +1,6 @@
 from .piece import Piece
-from .player import Player
-from .position import Position
+from ..Utility.player import Player
+from ..Utility.position import Position
 
 
 class InvalidPositionError(Exception):

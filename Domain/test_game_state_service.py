@@ -1,9 +1,9 @@
 import unittest
-from ..game_state_service import GameStateService, Move
-from ..board import Board
-from .. import factory
-from ..player import Player
-from ..position import Position
+from .game_state_service import GameStateService, Move
+from .Board.board import Board
+from . import factory
+from .Utility.player import Player
+from .Utility.position import Position
 
 """
 初期配置

@@ -1,4 +1,4 @@
-from .player import Player
+from ..Utility.player import Player
 
 
 class InvalidStateError(Exception):
