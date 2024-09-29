@@ -1,10 +1,8 @@
 import unittest
-from . import factory
+from .turn import Turn
 from .Board.board import Board
-from .MoveCheck.move_checker import PossibleMove, PossibleMoves
-from .Utility.position import Position
+from . import factory
 from .Utility.player import Player
-from .Utility.direction import Direction
 
 """
 初期配置
@@ -20,14 +18,14 @@ from .Utility.direction import Direction
 """
 
 
-class TestBoardService(unittest.TestCase):
+class TestTurn(unittest.TestCase):
     def setUp(self):
         self.board = Board()
         self.move_service = factory.create_common_move_service(self.board)
+        self.turn = Turn(self.move_service)
 
-    def test_first_possible_moves(self):
-        result = self.move_service.has_possible_move(Player.FIRST)
-        self.assertTrue(result)
+    def test_first_turn(self):
+        self.assertEqual(self.turn.get_next_player(), Player.FIRST)
 
 
 if __name__ == "__main__":

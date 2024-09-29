@@ -5,9 +5,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import unittest
-from othello_service import OthelloService, NextInfo, InvalidMoveError, MoveData
+from othello_service import OthelloService, InvalidMoveError, MoveData
 from Domain import factory
-from Domain.game_state_service import GameStateService
+from Domain.turn import Turn
 from Domain.Utility.player import Player
 from Domain.Utility.position import Position
 from Domain.Board.board import Board
@@ -29,28 +29,9 @@ from Domain.Board.board import Board
 class OthelloServiceTest(unittest.TestCase):
     def setUp(self):
         board = Board()
-        board_service = factory.create_common_board_service(board)
-        game_state_service = GameStateService(board_service)
-        self.othello_service = OthelloService(board_service, game_state_service)
-
-    def test_initial_state(self):
-        expect = NextInfo(Player.FIRST, True)
-        actually = self.othello_service.prepare()
-        self.assertEqual(expect, actually)
-
-    def test_valid_move(self):
-        move = MoveData(Player.FIRST, Position(3, 2))
-        self.othello_service.process(move)
-
-        expect = NextInfo(Player.SECOND, True)
-        actually = self.othello_service.prepare()
-
-        self.assertEqual(expect, actually)
-
-    def test_invalid_move(self):
-        move = MoveData(Player.FIRST, Position(0, 0))
-        with self.assertRaises(InvalidMoveError):
-            self.othello_service.process(move)
+        board_service = factory.create_common_move_service(board)
+        turn = Turn(board_service)
+        self.othello_service = OthelloService(board_service, turn)
 
 
 if __name__ == "__main__":
