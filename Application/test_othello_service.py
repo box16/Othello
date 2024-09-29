@@ -5,9 +5,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import unittest
-from othello_service import OthelloService, NextInfo, InvalidMoveError
+from othello_service import OthelloService, NextInfo, InvalidMoveError, MoveData
 from Domain import factory
-from Domain.game_state_service import GameStateService, Move
+from Domain.game_state_service import GameStateService
 from Domain.Utility.player import Player
 from Domain.Utility.position import Position
 from Domain.Board.board import Board
@@ -39,7 +39,7 @@ class OthelloServiceTest(unittest.TestCase):
         self.assertEqual(expect, actually)
 
     def test_valid_move(self):
-        move = Move(Player.FIRST, Position(3, 2))
+        move = MoveData(Player.FIRST, Position(3, 2))
         self.othello_service.process(move)
 
         expect = NextInfo(Player.SECOND, True)
@@ -48,7 +48,7 @@ class OthelloServiceTest(unittest.TestCase):
         self.assertEqual(expect, actually)
 
     def test_invalid_move(self):
-        move = Move(Player.FIRST, Position(0, 0))
+        move = MoveData(Player.FIRST, Position(0, 0))
         with self.assertRaises(InvalidMoveError):
             self.othello_service.process(move)
 

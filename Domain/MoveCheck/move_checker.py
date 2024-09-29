@@ -8,7 +8,7 @@ from ..Utility.direction import Direction
 
 
 @dataclass(frozen=True)
-class Move:
+class PossibleMove:
     pos_can_place: Position
     flippable_directions: Tuple[Direction]
 
@@ -17,8 +17,8 @@ class Move:
             self, "flippable_directions", tuple(self.flippable_directions)
         )
 
-    def __eq__(self, other: "Move"):
-        if not isinstance(other, Move):
+    def __eq__(self, other: "PossibleMove"):
+        if not isinstance(other, PossibleMove):
             return False
         return (self.pos_can_place == other.pos_can_place) and set(
             self.flippable_directions
@@ -28,7 +28,7 @@ class Move:
 @dataclass(frozen=True)
 class PossibleMoves:
     player: Player
-    moves: Union[Tuple[Move], List[Move]]
+    moves: Union[Tuple[PossibleMove], List[PossibleMove]]
 
     def __post_init__(self):
         object.__setattr__(self, "moves", tuple(self.moves))

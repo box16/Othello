@@ -1,8 +1,9 @@
 from Domain.board_service import BoardService, BoardUpdateCommand
 from Domain.game_state_service import GameStateService
 from dataclasses import dataclass
-from Domain.game_state_service import Move
 from Domain.Utility.player import Player
+from Domain.Utility.position import Position
+from Domain.game_state_service import Move
 
 
 @dataclass(frozen=True)
@@ -16,6 +17,12 @@ class NextInfo:
         return (self.next_player == other.next_player) and (
             self.can_continue == other.can_continue
         )
+
+
+@dataclass(frozen=True)
+class MoveData:
+    player: Player
+    position: Position
 
 
 class InvalidMoveError(Exception):
@@ -35,8 +42,10 @@ class OthelloService:
             self.game_state_service.can_continue(),
         )
 
-    def process(self, move: Move) -> None:
-        flippable_directions = self.game_state_service.get_flippable_directions(move)
+    def process(self, move: MoveData) -> None:
+        flippable_directions = self.game_state_service.get_flippable_directions(
+            Move(move.player, move.position)
+        )
         if not flippable_directions:
             raise InvalidMoveError("有効な手ではありません")
 

@@ -1,4 +1,4 @@
-from .move_checker import Move, PossibleMoves, IRule, BoardState
+from .move_checker import PossibleMove, PossibleMoves, IRule, BoardState
 from ..Utility.position import Position
 from ..Utility.direction import Direction
 from ..Board.board import InvalidPositionError
@@ -15,12 +15,12 @@ class Empty(IRule):
     def get_possible_moves(
         self, board_state: BoardState, possible_moves: PossibleMoves
     ) -> PossibleMoves:
-        result: List[Move] = []
+        result: List[PossibleMove] = []
         size = board_state.board.get_size()
         all_pos = [Position(i, j) for i in range(size) for j in range(size)]
         for pos in all_pos:
             if board_state.board.is_empty(pos):
-                result.append(Move(pos, ()))
+                result.append(PossibleMove(pos, ()))
         return PossibleMoves(board_state.player, result)
 
 
@@ -39,15 +39,15 @@ class OpponentPieceAround(IRule):
     def get_possible_moves(
         self, board_state: BoardState, possible_moves: PossibleMoves
     ) -> PossibleMoves:
-        result: List[Move] = []
+        result: List[PossibleMove] = []
         for move in possible_moves:
             valid_directions = self._check_direction(board_state, move)
             if not valid_directions:
                 continue
-            result.append(Move(move.pos_can_place, valid_directions))
+            result.append(PossibleMove(move.pos_can_place, valid_directions))
         return PossibleMoves(board_state.player, result)
 
-    def _check_direction(self, board_state: BoardState, move: Move):
+    def _check_direction(self, board_state: BoardState, move: PossibleMove):
         valid_directions = []
         for direction in self.DIRECTIONS:
             try:
@@ -65,7 +65,7 @@ class OpponentPiecesAreFlanked(IRule):
         self, board_state: BoardState, possible_moves: PossibleMoves
     ) -> PossibleMoves:
 
-        result: List[Move] = []
+        result: List[PossibleMove] = []
         for move in possible_moves:
             valid_directions = []
             for direction in move.flippable_directions:
@@ -73,7 +73,7 @@ class OpponentPiecesAreFlanked(IRule):
                     valid_directions.append(direction)
             if not valid_directions:
                 continue
-            result.append(Move(move.pos_can_place, valid_directions))
+            result.append(PossibleMove(move.pos_can_place, valid_directions))
         return PossibleMoves(board_state.player, result)
 
     def _check_direction(
