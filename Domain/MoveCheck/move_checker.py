@@ -16,7 +16,7 @@ class Move:
 @dataclass(frozen=True)
 class PossibleMove:
     pos_can_place: Position
-    flippable_directions: Tuple[Direction]
+    flippable_directions: List[Direction]
 
     def __post_init__(self):
         object.__setattr__(
@@ -34,7 +34,7 @@ class PossibleMove:
 @dataclass(frozen=True)
 class PossibleMoves:
     player: Player
-    moves: Union[Tuple[PossibleMove], List[PossibleMove]]
+    moves: List[PossibleMove]
 
     def __post_init__(self):
         object.__setattr__(self, "moves", tuple(self.moves))
@@ -59,9 +59,12 @@ class PossibleMoves:
                 return True
         return False
 
-    def get_flippable_directions(self, pos: Position) -> Tuple[Direction]:
+    def get_flippable_directions(self, move: Move) -> Tuple[Direction]:
+        if move.player != self.player:
+            return ()
+
         for m in self.moves:
-            if pos == m.pos_can_place:
+            if move.position == m.pos_can_place:
                 return m.flippable_directions
         return ()
 

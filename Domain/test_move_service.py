@@ -27,8 +27,16 @@ class TestMoveService(unittest.TestCase):
 
     def test_first_possible_moves(self):
         self.move_service.update_possible_move(Player.FIRST)
-        result = self.move_service.has_possible_move(Player.FIRST)
-        self.assertTrue(result)
+        e = (
+            PossibleMove(Position(3, 2), [Direction(0, 1)]),
+            PossibleMove(Position(2, 3), [Direction(1, 0)]),
+            PossibleMove(Position(5, 4), [Direction(-1, 0)]),
+            PossibleMove(Position(4, 5), [Direction(0, -1)]),
+        )
+        expect = PossibleMoves(Player.FIRST, e)
+        actually = self.move_service.possible_moves
+        self.assertEqual(expect, actually)
+        self.assertTrue(self.move_service.has_possible_move(Player.FIRST))
 
 
 if __name__ == "__main__":

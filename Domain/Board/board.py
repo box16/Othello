@@ -58,5 +58,17 @@ class Board:
             raise InvalidPositionError("ボードの範囲外です")
         return self.pieces[pos.x][pos.y].get_state()
 
+    def _flip(self, pos: Position) -> None:
+        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
+            raise InvalidPositionError("ボードの範囲外です")
+        self.pieces[pos.x][pos.y].flip()
+
     def update(self, command: BoardUpdateCommand) -> None:
-        pass
+        self._place_piece(command.place_position, command.player)
+        scalar = 1
+        for direction in command.flippable_directions:
+            while True:
+                target_position = command.place_position + (direction * scalar)
+                if self.get_state(target_position) == command.player:
+                    break
+                self._flip(target_position)

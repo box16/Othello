@@ -27,6 +27,10 @@ class TestTurn(unittest.TestCase):
     def test_first_turn(self):
         self.assertEqual(self.turn.get_next_player(), Player.FIRST)
 
+    def test_second_turn(self):
+        self.turn.update()
+        self.assertEqual(self.turn.get_next_player(), Player.SECOND)
+
 
 if __name__ == "__main__":
     unittest.main()

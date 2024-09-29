@@ -17,10 +17,10 @@ class Turn:
             raise GameIsOver("両プレイヤーとも打ち手がありません")
 
         now_player = self.next_player
-        if self._update(now_player):
+        if self._update(now_player.opponent()):
             return
 
-        if self._update(now_player.opponent()):
+        if self._update(now_player):
             return
 
         self.next_player = Player.NONE

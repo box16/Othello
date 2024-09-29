@@ -19,3 +19,9 @@ class BoardData:
             tuple(board.get_state(Position(i, j)) for j in range(board_size))
             for i in range(board_size)
         )
+
+    def __eq__(self, other: "BoardData") -> bool:
+        if not isinstance(other, BoardData):
+            return False
+
+        return set(self.pieces) == set(other.pieces)

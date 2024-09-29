@@ -5,12 +5,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import unittest
-from othello_service import OthelloService, InvalidMoveError, MoveData
+from othello_service import OthelloService, InvalidMoveError, MoveData, GameState
 from Domain import factory
 from Domain.turn import Turn
 from Domain.Utility.player import Player
 from Domain.Utility.position import Position
 from Domain.Board.board import Board
+from board_data import BoardData
 
 """
 初期配置
@@ -39,6 +40,13 @@ class OthelloServiceTest(unittest.TestCase):
 
     def test_valid_move_update(self):
         self.othello_service.update_game(MoveData(Player.FIRST, Position(3, 2)))
+
+        dummy_board = Board()
+        dummy_board._place_piece(Position(3, 2), Player.FIRST)
+        dummy_board._flip(Position(3, 3))
+        expect = GameState(Player.SECOND, BoardData(dummy_board))
+        actually = self.othello_service.get_game_state()
+        self.assertEqual(expect, actually)
 
 
 if __name__ == "__main__":

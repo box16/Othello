@@ -15,7 +15,10 @@ class MoveService:
         )
 
     def has_possible_move(self, player: Player) -> bool:
-        return self.possible_moves
+        return (self.possible_moves.player == player) and (self.possible_moves)
 
     def is_valid_move(self, move: Move):
         return move in self.possible_moves
+
+    def get_flippable_move(self, move: Move):
+        return self.possible_moves.get_flippable_directions(move)
