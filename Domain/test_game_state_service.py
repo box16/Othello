@@ -27,7 +27,7 @@ class TestGameStateService(unittest.TestCase):
 
     def test_first_possible_moves(self):
         move = Move(Player.FIRST, Position(3, 2))
-        self.assertTrue(self.game_state_service.is_valid_move(move))
+        self.assertTrue(self.game_state_service.get_flippable_directions(move))
 
 
 if __name__ == "__main__":

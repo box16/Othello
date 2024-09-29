@@ -32,5 +32,11 @@ class Board:
 
         return self.pieces[pos.x][pos.y].is_piece_state(state)
 
+    def flip(self, pos: Position) -> None:
+        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
+            raise InvalidPositionError("ボードの範囲外です")
+
+        self.pieces[pos.x][pos.y].flip()
+
     def get_size(self) -> int:
         return self.size

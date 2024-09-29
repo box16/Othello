@@ -1,7 +1,17 @@
 from .Board.board import Board
 from .Utility.position import Position
+from .Utility.direction import Direction
 from .Utility.player import Player
 from .MoveCheck.move_checker import MoveChecker, PossibleMoves, BoardState
+from typing import List
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class BoardUpdateCommand:
+    player: Player
+    place_position: Position
+    flippable_directions: List[Direction]
 
 
 class BoardService:
@@ -19,3 +29,14 @@ class BoardService:
 
     def get_possible_moves(self, player: Player) -> PossibleMoves:
         return self.move_checker.get_possible_moves(BoardState(self.board, player))
+
+    def update(self, command: BoardUpdateCommand) -> None:
+        self.board.place_piece(command.place_position, command.player)
+        for direction in command.flippable_directions:
+            scalar = 1
+            while True:
+                target_position = command.place_position + (direction * scalar)
+                if self.board.is_piece_state(target_position, command.player):
+                    break
+                self.board.flip(target_position)
+                scalar += 1

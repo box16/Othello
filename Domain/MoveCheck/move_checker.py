@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from dataclasses import dataclass
 from ..Utility.position import Position
 from ..Utility.player import Player
@@ -28,7 +28,7 @@ class Move:
 @dataclass(frozen=True)
 class PossibleMoves:
     player: Player
-    moves: Tuple[Move]
+    moves: Union[Tuple[Move], List[Move]]
 
     def __post_init__(self):
         object.__setattr__(self, "moves", tuple(self.moves))
@@ -49,6 +49,12 @@ class PossibleMoves:
             if position == m.pos_can_place:
                 return True
         return False
+
+    def get_flippable_directions(self, pos: Position) -> Tuple[Direction]:
+        for m in self.moves:
+            if pos == m.pos_can_place:
+                return m.flippable_directions
+        return ()
 
 
 @dataclass(frozen=True)
