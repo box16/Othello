@@ -65,8 +65,8 @@ class Board:
 
     def update(self, command: BoardUpdateCommand) -> None:
         self._place_piece(command.place_position, command.player)
-        scalar = 1
         for direction in command.flippable_directions:
+            scalar = 1
             while True:
                 target_position = command.place_position + (direction * scalar)
                 if self.get_state(target_position) == command.player:

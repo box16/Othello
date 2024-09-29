@@ -13,9 +13,6 @@ from Domain.Utility.position import Position
 from Domain.Board.board import Board
 from board_data import BoardData
 
-
-import pprint
-
 """
 初期配置
    0 1 2 3 4 5 6 7

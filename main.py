@@ -9,9 +9,8 @@ from Domain.factory import create_common_move_service
 
 
 def click_event(event):
-    game_state: GameState = othello_service.get_game_state()
     position = gui.convert_board_position(event)
-    othello_service.update_game(MoveData(game_state.next_player, position))
+    othello_service.update_game(MoveData(turn.get_next_player(), position))
     game_state: GameState = othello_service.get_game_state()
     gui.draw(game_state.board_data)
 
