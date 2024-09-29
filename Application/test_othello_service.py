@@ -29,9 +29,16 @@ from Domain.Board.board import Board
 class OthelloServiceTest(unittest.TestCase):
     def setUp(self):
         board = Board()
-        board_service = factory.create_common_move_service(board)
-        turn = Turn(board_service)
-        self.othello_service = OthelloService(board_service, turn)
+        move_service = factory.create_common_move_service(board)
+        turn = Turn(move_service)
+        self.othello_service = OthelloService(board, move_service, turn)
+
+    def test_invalid_move_update(self):
+        with self.assertRaises(InvalidMoveError):
+            self.othello_service.update_game(MoveData(Player.FIRST, Position(0, 0)))
+
+    def test_valid_move_update(self):
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(3, 2)))
 
 
 if __name__ == "__main__":

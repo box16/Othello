@@ -8,6 +8,12 @@ from ..Utility.direction import Direction
 
 
 @dataclass(frozen=True)
+class Move:
+    player: Player
+    position: Position
+
+
+@dataclass(frozen=True)
 class PossibleMove:
     pos_can_place: Position
     flippable_directions: Tuple[Direction]
@@ -44,9 +50,12 @@ class PossibleMoves:
             return False
         return (set(self.moves) == set(other.moves)) and (self.player == other.player)
 
-    def __contains__(self, position: Position):
+    def __contains__(self, move: Move):
+        if move.player != self.player:
+            return False
+
         for m in self.moves:
-            if position == m.pos_can_place:
+            if move.position == m.pos_can_place:
                 return True
         return False
 

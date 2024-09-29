@@ -28,3 +28,6 @@ class Piece:
 
     def is_piece_state(self, state: Player) -> bool:
         return self.state == state
+
+    def get_state(self) -> Player:
+        return self.state

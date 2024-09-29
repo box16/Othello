@@ -20,12 +20,13 @@ from .Utility.direction import Direction
 """
 
 
-class TestBoardService(unittest.TestCase):
+class TestMoveService(unittest.TestCase):
     def setUp(self):
         self.board = Board()
         self.move_service = factory.create_common_move_service(self.board)
 
     def test_first_possible_moves(self):
+        self.move_service.update_possible_move(Player.FIRST)
         result = self.move_service.has_possible_move(Player.FIRST)
         self.assertTrue(result)
 

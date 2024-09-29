@@ -1,9 +1,6 @@
 from .Board.board import Board
-from .Utility.position import Position
-from .Utility.direction import Direction
 from .Utility.player import Player
-from .MoveCheck.move_checker import MoveChecker, PossibleMoves, BoardState
-from typing import List
+from .MoveCheck.move_checker import MoveChecker, PossibleMoves, BoardState, Move
 
 
 class MoveService:
@@ -12,8 +9,13 @@ class MoveService:
         self.move_checker = move_checker
         self.possible_moves: PossibleMoves = None
 
-    def has_possible_move(self, player: Player) -> bool:
+    def update_possible_move(self, player: Player) -> None:
         self.possible_moves = self.move_checker.get_possible_moves(
             BoardState(self.board, player)
         )
+
+    def has_possible_move(self, player: Player) -> bool:
         return self.possible_moves
+
+    def is_valid_move(self, move: Move):
+        return move in self.possible_moves

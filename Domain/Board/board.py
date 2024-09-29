@@ -53,5 +53,10 @@ class Board:
     def get_size(self) -> int:
         return self.size
 
+    def get_state(self, pos: Position) -> Player:
+        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
+            raise InvalidPositionError("ボードの範囲外です")
+        return self.pieces[pos.x][pos.y].get_state()
+
     def update(self, command: BoardUpdateCommand) -> None:
         pass
