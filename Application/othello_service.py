@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from Domain.Utility.player import Player
 from Domain.Utility.position import Position
 from Domain.Board.board import Board, BoardUpdateCommand
-from board_data import BoardData
+from Application.board_data import BoardData
 from Domain.MoveCheck.move_checker import Move
 
 

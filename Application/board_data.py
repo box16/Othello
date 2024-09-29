@@ -26,4 +26,4 @@ class BoardData:
         if not isinstance(other, BoardData):
             return False
 
-        return set(self.pieces) == set(other.pieces)
+        return (set(self.pieces) == set(other.pieces)) and (self.size == other.size)

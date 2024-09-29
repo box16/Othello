@@ -72,3 +72,4 @@ class Board:
                 if self.get_state(target_position) == command.player:
                     break
                 self._flip(target_position)
+                scalar += 1

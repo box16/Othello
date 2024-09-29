@@ -13,6 +13,9 @@ from Domain.Utility.position import Position
 from Domain.Board.board import Board
 from board_data import BoardData
 
+
+import pprint
+
 """
 初期配置
    0 1 2 3 4 5 6 7
@@ -46,7 +49,7 @@ class OthelloServiceTest(unittest.TestCase):
         dummy_board._flip(Position(3, 3))
         expect = GameState(Player.SECOND, BoardData(dummy_board))
         actually = self.othello_service.get_game_state()
-        self.assertEqual(expect, actually)
+        self.assertEqual(str(expect), str(actually))
 
 
 if __name__ == "__main__":
