@@ -1,18 +1,16 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import unittest
-from .othello_service import OthelloService
+from othello_service import OthelloService, NextInfo, InvalidMoveError
 from Domain import factory
-from Domain.game_state_service import GameStateService
-from .othello_service import NextInfo
+from Domain.game_state_service import GameStateService, Move
 from Domain.Utility.player import Player
-from Domain.Board.board import Board
-from Domain.game_state_service import Move
 from Domain.Utility.position import Position
-from .othello_service import InvalidMoveError
+from Domain.Board.board import Board
 
 """
 初期配置

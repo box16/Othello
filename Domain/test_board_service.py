@@ -1,7 +1,6 @@
 import unittest
 from . import factory
 from .Board.board import Board
-from .board_service import BoardService
 from .MoveCheck.move_checker import Move, PossibleMoves
 from .Utility.position import Position
 from .Utility.player import Player

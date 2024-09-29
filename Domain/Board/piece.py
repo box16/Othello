@@ -21,7 +21,7 @@ class Piece:
         if self.state == Player.NONE:
             raise InvalidStateError("空のピースは反転できません")
 
-        self.state = Player.SECOND if self.state == Player.FIRST else Player.FIRST
+        self.state = self.state.opponent()
 
     def is_empty(self) -> bool:
         return self.state == Player.NONE
