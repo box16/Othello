@@ -21,7 +21,7 @@ class Empty(IRule):
         for pos in all_pos:
             if board_state.board.is_empty(pos):
                 result.append(Move(pos, ()))
-        return PossibleMoves(result)
+        return PossibleMoves(board_state.player, result)
 
 
 class OpponentPieceAround(IRule):
@@ -45,7 +45,7 @@ class OpponentPieceAround(IRule):
             if not valid_directions:
                 continue
             result.append(Move(move.pos_can_place, valid_directions))
-        return PossibleMoves(result)
+        return PossibleMoves(board_state.player, result)
 
     def _check_direction(self, board_state: BoardState, move: Move):
         valid_directions = []
@@ -74,7 +74,7 @@ class OpponentPiecesAreFlanked(IRule):
             if not valid_directions:
                 continue
             result.append(Move(move.pos_can_place, valid_directions))
-        return PossibleMoves(result)
+        return PossibleMoves(board_state.player, result)
 
     def _check_direction(
         self, board_state: BoardState, base_pos: Position, direction: Direction
@@ -90,9 +90,3 @@ class OpponentPiecesAreFlanked(IRule):
                 scalar += 1
             except InvalidPositionError:
                 return False
-
-
-def create_common_checker():
-    rules = [Empty(), OpponentPieceAround(), OpponentPiecesAreFlanked()]
-    common_checker = MoveChecker(rules)
-    return common_checker

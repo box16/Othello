@@ -1,6 +1,6 @@
 from .board import Board
 from .position import Position
-from .piece import Player
+from .player import Player
 from .move_checker import MoveChecker, PossibleMoves, BoardState
 
 
