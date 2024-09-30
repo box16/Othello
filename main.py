@@ -1,11 +1,11 @@
 from UI.gui_drawer import GUIDrawer
-from Domain.Board.board import Board
+from Domain.Model.Board.board import Board
 import tkinter as tk
 from Application.othello_service import OthelloService, GameState, MoveData
 from Application.board_data import BoardData
-from Domain.move_service import MoveService
-from Domain.turn import Turn
-from Domain.factory import create_common_move_service
+from Domain.Service.move_service import MoveService
+from Domain.Model.Turn.turn import Turn
+from Domain.Service.move_service_factory import create_common_move_service
 
 
 def click_event(event):

@@ -1,10 +1,15 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
 import unittest
-from . import factory
-from .Board.board import Board
-from .MoveCheck.move_checker import PossibleMove, PossibleMoves
-from .Utility.position import Position
-from .Utility.player import Player
-from .Utility.direction import Direction
+from Domain.Service.move_service_factory import create_common_move_service
+from Domain.Model.Board.board import Board
+from Domain.Model.Move.possible_move import PossibleMove, PossibleMoves
+from Domain.Model.position import Position
+from Domain.Model.player import Player
+from Domain.Model.direction import Direction
 
 """
 初期配置
@@ -23,7 +28,7 @@ from .Utility.direction import Direction
 class TestMoveService(unittest.TestCase):
     def setUp(self):
         self.board = Board()
-        self.move_service = factory.create_common_move_service(self.board)
+        self.move_service = create_common_move_service(self.board)
 
     def test_first_possible_moves(self):
         self.move_service.update_possible_move(Player.FIRST)

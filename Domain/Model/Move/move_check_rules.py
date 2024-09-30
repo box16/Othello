@@ -1,8 +1,10 @@
-from .move_checker import PossibleMove, PossibleMoves, IRule, BoardState
-from ..Utility.position import Position
-from ..Utility.direction import Direction
-from ..Board.board import InvalidPositionError
 from typing import List
+from Domain.Model.Move.i_rule import IRule
+from Domain.Model.Move.board_state import BoardState
+from Domain.Model.Move.possible_move import PossibleMove, PossibleMoves
+from Domain.Model.position import Position
+from Domain.Model.direction import Direction
+from Domain.Model.Board.board import InvalidPositionError
 
 """
 1. 置こうとしている場所が空である事

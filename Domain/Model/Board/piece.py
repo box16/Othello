@@ -1,4 +1,4 @@
-from ..Utility.player import Player
+from Domain.Model.player import Player
 
 
 class InvalidStateError(Exception):
@@ -24,7 +24,7 @@ class Piece:
         self.state = self.state.opponent()
 
     def is_empty(self) -> bool:
-        return self.state == Player.NONE
+        return self.state.is_none()
 
     def is_piece_state(self, state: Player) -> bool:
         return self.state == state

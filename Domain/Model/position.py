@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from .direction import Direction
+from Domain.Model.direction import Direction
 
 
 @dataclass(frozen=True)

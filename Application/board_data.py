@@ -1,6 +1,6 @@
-from Domain.Board.board import Board
-from Domain.Utility.position import Position
-from Domain.Utility.player import Player
+from Domain.Model.Board.board import Board
+from Domain.Model.position import Position
+from Domain.Model.player import Player
 from dataclasses import dataclass
 from typing import Tuple
 

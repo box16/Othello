@@ -1,5 +1,5 @@
-from .Utility.player import Player
-from .move_service import MoveService
+from Domain.Model.player import Player
+from Domain.Service.move_service import MoveService
 
 
 class GameIsOver(Exception):

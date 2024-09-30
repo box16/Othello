@@ -1,17 +1,22 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 import unittest
-from othello_service import OthelloService, InvalidMoveError, MoveData, GameState
-from Domain import factory
-from Domain.turn import Turn
-from Domain.Utility.player import Player
-from Domain.Utility.position import Position
-from Domain.Board.board import Board
-from board_data import BoardData
+from Application.othello_service import (
+    OthelloService,
+    InvalidMoveError,
+    MoveData,
+    GameState,
+)
+from Domain.Service.move_service_factory import create_common_move_service
+from Domain.Model.Turn.turn import Turn
+from Domain.Model.player import Player
+from Domain.Model.position import Position
+from Domain.Model.Board.board import Board
+from Application.board_data import BoardData
 
 """
 初期配置
@@ -30,7 +35,7 @@ from board_data import BoardData
 class OthelloServiceTest(unittest.TestCase):
     def setUp(self):
         board = Board()
-        move_service = factory.create_common_move_service(board)
+        move_service = create_common_move_service(board)
         turn = Turn(move_service)
         self.othello_service = OthelloService(board, move_service, turn)
 

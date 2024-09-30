@@ -1,11 +1,11 @@
-from Domain.move_service import MoveService
-from Domain.turn import Turn
 from dataclasses import dataclass
-from Domain.Utility.player import Player
-from Domain.Utility.position import Position
-from Domain.Board.board import Board, BoardUpdateCommand
+from Domain.Service.move_service import MoveService
+from Domain.Model.Turn.turn import Turn
+from Domain.Model.player import Player
+from Domain.Model.position import Position
+from Domain.Model.Board.board import Board, BoardUpdateCommand
 from Application.board_data import BoardData
-from Domain.MoveCheck.move_checker import Move
+from Domain.Model.Move.move import Move
 
 
 @dataclass(frozen=True)

@@ -1,6 +1,9 @@
-from .Board.board import Board
-from .Utility.player import Player
-from .MoveCheck.move_checker import MoveChecker, PossibleMoves, BoardState, Move
+from Domain.Model.Board.board import Board
+from Domain.Model.player import Player
+from Domain.Model.Move.move import Move
+from Domain.Model.Move.possible_move import PossibleMoves
+from Domain.Model.Move.move_checker import MoveChecker
+from Domain.Model.Move.board_state import BoardState
 
 
 class MoveService:

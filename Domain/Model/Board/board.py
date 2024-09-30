@@ -1,20 +1,11 @@
-from .piece import Piece
-from ..Utility.player import Player
-from ..Utility.position import Position
-from dataclasses import dataclass
-from ..Utility.direction import Direction
-from typing import List
+from Domain.Model.Board.piece import Piece
+from Domain.Model.player import Player
+from Domain.Model.position import Position
+from Domain.Model.Board.board_update_command import BoardUpdateCommand
 
 
 class InvalidPositionError(Exception):
     pass
-
-
-@dataclass(frozen=True)
-class BoardUpdateCommand:
-    player: Player
-    place_position: Position
-    flippable_directions: List[Direction]
 
 
 class Board:

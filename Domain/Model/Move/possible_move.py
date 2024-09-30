@@ -1,16 +1,9 @@
-from abc import ABC, abstractmethod
-from typing import List, Tuple, Union
+from typing import List, Tuple
 from dataclasses import dataclass
-from ..Utility.position import Position
-from ..Utility.player import Player
-from ..Board.board import Board
-from ..Utility.direction import Direction
-
-
-@dataclass(frozen=True)
-class Move:
-    player: Player
-    position: Position
+from Domain.Model.position import Position
+from Domain.Model.player import Player
+from Domain.Model.direction import Direction
+from Domain.Model.Move.move import Move
 
 
 @dataclass(frozen=True)
@@ -67,30 +60,3 @@ class PossibleMoves:
             if move.position == m.pos_can_place:
                 return m.flippable_directions
         return ()
-
-
-@dataclass(frozen=True)
-class BoardState:
-    board: Board
-    player: Player
-
-
-class IRule(ABC):
-    @abstractmethod
-    def get_possible_moves(
-        self, board_state: BoardState, possible_moves: PossibleMoves
-    ) -> PossibleMoves:
-        pass
-
-
-class MoveChecker:
-    def __init__(self, rules: List[IRule]) -> None:
-        self.rules = rules
-
-    def get_possible_moves(self, board_state: BoardState) -> PossibleMoves:
-        possible_moves: PossibleMoves = PossibleMoves(Player.NONE, [])
-        for rule in self.rules:
-            possible_moves = rule.get_possible_moves(board_state, possible_moves)
-            if not possible_moves:
-                return PossibleMoves(Player.NONE, [])
-        return possible_moves

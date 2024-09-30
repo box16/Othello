@@ -1,8 +1,8 @@
 from .drawer import Drawer
 import tkinter as tk
 from Application.board_data import BoardData
-from Domain.Utility.player import Player
-from Domain.Utility.position import Position
+from Domain.Model.player import Player
+from Domain.Model.position import Position
 
 
 class GUIDrawer(Drawer):

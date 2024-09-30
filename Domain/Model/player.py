@@ -13,3 +13,6 @@ class Player(Enum):
             return Player.FIRST
         else:
             return Player.NONE
+
+    def is_none(self):
+        return self == Player.NONE

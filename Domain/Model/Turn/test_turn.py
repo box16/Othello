@@ -1,8 +1,16 @@
+import sys
+import os
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+)
+
+
 import unittest
-from .turn import Turn
-from .Board.board import Board
-from . import factory
-from .Utility.player import Player
+from Domain.Model.Turn.turn import Turn
+from Domain.Model.Board.board import Board
+from Domain.Model.player import Player
+from Domain.Service.move_service_factory import create_common_move_service
 
 """
 初期配置
@@ -21,7 +29,7 @@ from .Utility.player import Player
 class TestTurn(unittest.TestCase):
     def setUp(self):
         self.board = Board()
-        self.move_service = factory.create_common_move_service(self.board)
+        self.move_service = create_common_move_service(self.board)
         self.turn = Turn(self.move_service)
 
     def test_first_turn(self):
