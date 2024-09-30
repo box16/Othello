@@ -2,20 +2,17 @@ from Domain.Model.Board.board import Board
 from Domain.Model.player import Player
 from Domain.Model.Move.move import Move
 from Domain.Model.Move.possible_move import PossibleMoves
-from Domain.Model.Move.move_checker import MoveChecker
-from Domain.Model.Move.board_state import BoardState
+from Domain.Model.Move.i_move_rule import IMoveRule
 
 
 class MoveService:
-    def __init__(self, board: Board, move_checker: MoveChecker) -> None:
+    def __init__(self, board: Board, move_rule: IMoveRule) -> None:
         self.board = board
-        self.move_checker = move_checker
+        self.move_rule = move_rule
         self.possible_moves: PossibleMoves = None
 
     def update_possible_move(self, player: Player) -> None:
-        self.possible_moves = self.move_checker.get_possible_moves(
-            BoardState(self.board, player)
-        )
+        self.possible_moves = self.move_rule.get_possible_moves(self.board, player)
 
     def has_possible_move(self, player: Player) -> bool:
         return (self.possible_moves.player == player) and (self.possible_moves)

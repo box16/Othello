@@ -10,7 +10,8 @@ import unittest
 from Domain.Model.Turn.turn import Turn
 from Domain.Model.Board.board import Board
 from Domain.Model.player import Player
-from Domain.Service.move_service_factory import create_common_move_service
+from Domain.Model.Move.move_rule import StandardRule
+from Domain.Service.move_service import MoveService
 
 """
 初期配置
@@ -29,7 +30,7 @@ from Domain.Service.move_service_factory import create_common_move_service
 class TestTurn(unittest.TestCase):
     def setUp(self):
         self.board = Board()
-        self.move_service = create_common_move_service(self.board)
+        self.move_service = MoveService(self.board, StandardRule())
         self.turn = Turn(self.move_service)
 
     def test_first_turn(self):

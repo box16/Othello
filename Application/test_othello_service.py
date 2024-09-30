@@ -11,12 +11,13 @@ from Application.othello_service import (
     MoveData,
     GameState,
 )
-from Domain.Service.move_service_factory import create_common_move_service
 from Domain.Model.Turn.turn import Turn
 from Domain.Model.player import Player
 from Domain.Model.position import Position
 from Domain.Model.Board.board import Board
 from Application.board_data import BoardData
+from Domain.Model.Move.move_rule import StandardRule
+from Domain.Service.move_service import MoveService
 
 """
 初期配置
@@ -35,7 +36,7 @@ from Application.board_data import BoardData
 class OthelloServiceTest(unittest.TestCase):
     def setUp(self):
         board = Board()
-        move_service = create_common_move_service(board)
+        move_service = MoveService(board, StandardRule())
         turn = Turn(move_service)
         self.othello_service = OthelloService(board, move_service, turn)
 
