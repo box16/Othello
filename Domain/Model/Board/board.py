@@ -1,3 +1,4 @@
+from functools import wraps
 from Domain.Model.Board.piece import Piece
 from Domain.Model.player import Player
 from Domain.Model.position import Position
@@ -23,44 +24,45 @@ class Board:
         self._place_piece(Position(half, half), Player.SECOND)
         self._place_piece(Position(half - 1, half - 1), Player.SECOND)
 
-    def _place_piece(self, pos: Position, state: Player) -> None:
-        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
-            raise InvalidPositionError("ボードの範囲外です")
+    def check_position(func):
+        @wraps(func)
+        def wrapper(self, pos: Position, *args, **kwargs):
+            if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
+                raise InvalidPositionError(f"ボードの範囲外です : {str(pos)}")
+            return func(self, pos, *args, **kwargs)
 
+        return wrapper
+
+    @check_position
+    def _place_piece(self, pos: Position, state: Player) -> None:
         self.pieces[pos.x][pos.y].place(state)
 
+    @check_position
     def is_empty(self, pos: Position) -> bool:
-        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
-            raise InvalidPositionError("ボードの範囲外です")
-
         return self.pieces[pos.x][pos.y].is_empty()
 
+    @check_position
     def is_piece_state(self, pos: Position, state: Player) -> bool:
-        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
-            raise InvalidPositionError("ボードの範囲外です")
-
         return self.pieces[pos.x][pos.y].is_piece_state(state)
+
+    @check_position
+    def get_state(self, pos: Position) -> Player:
+        return self.pieces[pos.x][pos.y].get_state()
+
+    @check_position
+    def _flip(self, pos: Position) -> None:
+        self.pieces[pos.x][pos.y].flip()
 
     def get_size(self) -> int:
         return self.size
 
-    def get_state(self, pos: Position) -> Player:
-        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
-            raise InvalidPositionError("ボードの範囲外です")
-        return self.pieces[pos.x][pos.y].get_state()
-
-    def _flip(self, pos: Position) -> None:
-        if not pos.is_inside(self.TOP_LEFT, self.BOTTOM_RIGHT):
-            raise InvalidPositionError("ボードの範囲外です")
-        self.pieces[pos.x][pos.y].flip()
-
     def update(self, command: BoardUpdateCommand) -> None:
         self._place_piece(command.place_position, command.player)
         for direction in command.flippable_directions:
-            scalar = 1
+            length = 1
             while True:
-                target_position = command.place_position + (direction * scalar)
+                target_position = command.place_position + (direction * length)
                 if self.get_state(target_position) == command.player:
                     break
                 self._flip(target_position)
-                scalar += 1
+                length += 1

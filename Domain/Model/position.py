@@ -19,6 +19,9 @@ class Position:
 
         return Position(self.x * scalar, self.y * scalar)
 
+    def __str__(self) -> str:
+        return f"(x:{self.x}, y:{self.y})"
+
     def is_inside(self, top_left, bottom_right) -> bool:
         if not isinstance(top_left, Position):
             raise TypeError("Positionを入力してください")
