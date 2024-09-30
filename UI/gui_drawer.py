@@ -8,7 +8,7 @@ from Domain.Model.position import Position
 class GUIDrawer(Drawer):
     def __init__(self, root, board_data: BoardData, bind_function) -> None:
         self.root = root
-        self.cell_size = 80  # 各セルのサイズ
+        self.cell_size = 80
         self.board_size = board_data.size
         self.canvas = tk.Canvas(
             self.root,
