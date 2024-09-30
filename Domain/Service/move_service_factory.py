@@ -1,6 +1,6 @@
 from Domain.Model.Board.board import Board
 from Domain.Model.Move.move_checker import MoveChecker
-from Domain.Model.Move.move_check_rules import (
+from Domain.Model.Move.move_rule import (
     Empty,
     OpponentPieceAround,
     OpponentPiecesAreFlanked,

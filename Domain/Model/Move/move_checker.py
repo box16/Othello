@@ -1,12 +1,12 @@
 from typing import List
 from Domain.Model.player import Player
-from Domain.Model.Move.i_rule import IRule
+from Domain.Model.Move.i_move_rule import IMoveRule
 from Domain.Model.Move.possible_move import PossibleMoves
 from Domain.Model.Move.board_state import BoardState
 
 
 class MoveChecker:
-    def __init__(self, rules: List[IRule]) -> None:
+    def __init__(self, rules: List[IMoveRule]) -> None:
         self.rules = rules
 
     def get_possible_moves(self, board_state: BoardState) -> PossibleMoves:

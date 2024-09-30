@@ -1,5 +1,5 @@
 from typing import List
-from Domain.Model.Move.i_rule import IRule
+from Domain.Model.Move.i_move_rule import IMoveRule
 from Domain.Model.Move.board_state import BoardState
 from Domain.Model.Move.possible_move import PossibleMove, PossibleMoves
 from Domain.Model.position import Position
@@ -13,7 +13,7 @@ from Domain.Model.Board.board import InvalidPositionError
 """
 
 
-class Empty(IRule):
+class Empty(IMoveRule):
     def get_possible_moves(
         self, board_state: BoardState, possible_moves: PossibleMoves
     ) -> PossibleMoves:
@@ -26,7 +26,7 @@ class Empty(IRule):
         return PossibleMoves(board_state.player, result)
 
 
-class OpponentPieceAround(IRule):
+class OpponentPieceAround(IMoveRule):
     DIRECTIONS = [
         Direction(-1, -1),
         Direction(0, -1),
@@ -62,7 +62,7 @@ class OpponentPieceAround(IRule):
         return valid_directions
 
 
-class OpponentPiecesAreFlanked(IRule):
+class OpponentPiecesAreFlanked(IMoveRule):
     def get_possible_moves(
         self, board_state: BoardState, possible_moves: PossibleMoves
     ) -> PossibleMoves:
