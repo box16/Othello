@@ -5,7 +5,7 @@ from Application.othello_service import OthelloService, GameState, MoveData
 from Application.board_data import BoardData
 from Domain.Service.move_service import MoveService
 from Domain.Model.Turn.turn import Turn
-from Domain.Model.Move.move_rule import StandardRule
+from Domain.Model.Move.standard_rule import StandardRule
 
 
 def click_event(event):

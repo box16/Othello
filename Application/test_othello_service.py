@@ -16,7 +16,7 @@ from Domain.Model.player import Player
 from Domain.Model.position import Position
 from Domain.Model.Board.board import Board
 from Application.board_data import BoardData
-from Domain.Model.Move.move_rule import StandardRule
+from Domain.Model.Move.standard_rule import StandardRule
 from Domain.Service.move_service import MoveService
 
 """

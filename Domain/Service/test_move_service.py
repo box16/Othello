@@ -9,7 +9,7 @@ from Domain.Model.Move.possible_move import PossibleMove, PossibleMoves
 from Domain.Model.position import Position
 from Domain.Model.player import Player
 from Domain.Model.direction import Direction
-from Domain.Model.Move.move_rule import StandardRule
+from Domain.Model.Move.standard_rule import StandardRule
 from Domain.Service.move_service import MoveService
 
 """

@@ -10,7 +10,7 @@ import unittest
 from Domain.Model.Turn.turn import Turn
 from Domain.Model.Board.board import Board
 from Domain.Model.player import Player
-from Domain.Model.Move.move_rule import StandardRule
+from Domain.Model.Move.standard_rule import StandardRule
 from Domain.Service.move_service import MoveService
 
 """
