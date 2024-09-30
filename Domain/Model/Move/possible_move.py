@@ -19,9 +19,12 @@ class PossibleMove:
     def __eq__(self, other: "PossibleMove"):
         if not isinstance(other, PossibleMove):
             return False
-        return (self.pos_can_place == other.pos_can_place) and set(
-            self.flippable_directions
-        ) == set(other.flippable_directions)
+
+        is_same_pos = self.pos_can_place == other.pos_can_place
+        is_sasme_directions = set(self.flippable_directions) == set(
+            other.flippable_directions
+        )
+        return is_same_pos and is_sasme_directions
 
 
 @dataclass(frozen=True)
