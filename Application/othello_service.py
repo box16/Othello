@@ -1,23 +1,11 @@
 from dataclasses import dataclass
 from Domain.Service.move_service import MoveService
 from Domain.Model.Turn.turn import Turn
-from Domain.Model.player import Player
-from Domain.Model.position import Position
 from Domain.Model.Board.board import Board, BoardUpdateCommand
-from Application.board_data import BoardData
 from Domain.Model.Move.move import Move
-
-
-@dataclass(frozen=True)
-class GameState:
-    next_player: Player
-    board_data: BoardData
-
-
-@dataclass(frozen=True)
-class MoveData:
-    player: Player
-    position: Position
+from Application.board_data import BoardData
+from Application.game_data import GameData
+from Application.move_data import MoveData
 
 
 class InvalidMoveError(Exception):
@@ -30,11 +18,11 @@ class OthelloService:
         self.move_service = move_service
         self.turn = turn
 
-    def get_game_state(self) -> GameState:
-        return GameState(self.turn.get_next_player(), BoardData(self.board))
+    def get_game_data(self) -> GameData:
+        return GameData(self.turn.get_next_player(), BoardData(self.board))
 
-    def update_game(self, _move: MoveData) -> None:
-        move = Move(_move.player, _move.position)
+    def update_game(self, move_data: MoveData) -> None:
+        move = Move(move_data.player, move_data.position)
         if not self.move_service.is_valid_move(move):
             raise InvalidMoveError("無効な手です")
 
