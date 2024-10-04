@@ -50,6 +50,31 @@ class OthelloServiceTest(unittest.TestCase):
         self.assertEqual(Player.SECOND, self.othello_service.get_next_player())
         self.assertEqual(BoardData(expect_board), self.othello_service.get_board_data())
 
+    def test_skip(self):
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(5, 4)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(5, 5)))
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(3, 2)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(6, 4)))
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(7, 4)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(7, 3)))
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(5, 6)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(7, 5)))
+
+        self.assertEqual(Player.SECOND, self.othello_service.get_next_player())
+
+    def test_end_game(self):
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(5, 4)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(3, 5)))
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(2, 4)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(5, 3)))
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(4, 6)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(5, 5)))
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(6, 4)))
+        self.othello_service.update_game(MoveData(Player.SECOND, Position(4, 5)))
+        self.othello_service.update_game(MoveData(Player.FIRST, Position(4, 2)))
+
+        self.assertFalse(self.othello_service.can_continue_game())
+
 
 if __name__ == "__main__":
     unittest.main()

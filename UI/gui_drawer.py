@@ -1,6 +1,5 @@
 from .drawer import Drawer
 import tkinter as tk
-from Application.board_data import BoardData
 from Application.othello_service import OthelloService
 from Application.move_data import MoveData
 from Domain.Model.player import Player
@@ -16,15 +15,14 @@ class GUIDrawer(Drawer):
         self.othello_service = othello_service
 
         board_data = self.othello_service.get_board_data()
-        self.board_size = board_data.size
-
-        canvas_size = self.board_size * self.CELL_SIZE
-        geometry_height = canvas_size + self.TEXT_AREA_SIZE
-        self.root.geometry(f"{canvas_size}x{geometry_height}")
+        geometry_width = board_data.size * self.CELL_SIZE
+        geometry_height = geometry_width + self.TEXT_AREA_SIZE
+        self.root.geometry(f"{geometry_width}x{geometry_height}")
 
         self.label = tk.Label(self.root, text="Initialize", font=("Arial", 40))
         self.label.pack()
 
+        canvas_size = geometry_width
         self.canvas = tk.Canvas(
             self.root,
             width=canvas_size,
@@ -44,22 +42,27 @@ class GUIDrawer(Drawer):
         else:
             return "Green"
 
-    def _update(self, event) -> None:
+    def _update(self, event: tk.Event) -> None:
         if not self.othello_service.can_continue_game():
-            pass
+            return
 
         player = self.othello_service.get_next_player()
         position = self._convert_board_position(event)
         self.othello_service.update_game(MoveData(player, position))
-        self.draw()
+
+        if not self.othello_service.can_continue_game():
+            self.draw()
+            self.label.config(text=f"Game is end.")
+        else:
+            self.draw()
 
     def draw(self) -> None:
         next_player = self.othello_service.get_next_player()
         board_data = self.othello_service.get_board_data()
         self.label.config(text=f"Next: {self._get_player_color(next_player)}")
 
-        for i in range(self.board_size):
-            for j in range(self.board_size):
+        for i in range(board_data.size):
+            for j in range(board_data.size):
                 x1 = i * self.CELL_SIZE
                 y1 = j * self.CELL_SIZE
                 x2 = x1 + self.CELL_SIZE
@@ -82,7 +85,5 @@ class GUIDrawer(Drawer):
             fill=color,
         )
 
-    def _convert_board_position(self, click_event) -> Position:
-        return Position(
-            int(click_event.x / self.CELL_SIZE), int(click_event.y / self.CELL_SIZE)
-        )
+    def _convert_board_position(self, event: tk.Event) -> Position:
+        return Position(int(event.x / self.CELL_SIZE), int(event.y / self.CELL_SIZE))
