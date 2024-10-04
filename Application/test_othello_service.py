@@ -6,7 +6,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 import unittest
 from Application.othello_service import OthelloService, InvalidMoveError
-from Application.game_data import GameData
 from Application.move_data import MoveData
 from Domain.Model.Turn.turn import Turn
 from Domain.Model.player import Player
@@ -44,12 +43,12 @@ class OthelloServiceTest(unittest.TestCase):
     def test_valid_move_update(self):
         self.othello_service.update_game(MoveData(Player.FIRST, Position(3, 2)))
 
-        dummy_board = Board()
-        dummy_board._place_piece(Position(3, 2), Player.FIRST)
-        dummy_board._flip(Position(3, 3))
-        expect = GameData(Player.SECOND, BoardData(dummy_board))
-        actually = self.othello_service.get_game_data()
-        self.assertEqual(str(expect), str(actually))
+        expect_board = Board()
+        expect_board._place_piece(Position(3, 2), Player.FIRST)
+        expect_board._flip(Position(3, 3))
+
+        self.assertEqual(Player.SECOND, self.othello_service.get_next_player())
+        self.assertEqual(BoardData(expect_board), self.othello_service.get_board_data())
 
 
 if __name__ == "__main__":
