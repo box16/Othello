@@ -1,51 +1,88 @@
 from .drawer import Drawer
 import tkinter as tk
 from Application.board_data import BoardData
+from Application.othello_service import OthelloService
+from Application.move_data import MoveData
 from Domain.Model.player import Player
 from Domain.Model.position import Position
 
 
 class GUIDrawer(Drawer):
-    def __init__(self, root, board_data: BoardData, bind_function) -> None:
+    CELL_SIZE = 80
+    TEXT_AREA_SIZE = 100
+
+    def __init__(self, root: tk.Tk, othello_service: OthelloService) -> None:
         self.root = root
-        self.cell_size = 80
+        self.othello_service = othello_service
+
+        board_data = self.othello_service.get_board_data()
         self.board_size = board_data.size
+
+        canvas_size = self.board_size * self.CELL_SIZE
+        geometry_height = canvas_size + self.TEXT_AREA_SIZE
+        self.root.geometry(f"{canvas_size}x{geometry_height}")
+
+        self.label = tk.Label(self.root, text="Initialize", font=("Arial", 40))
+        self.label.pack()
+
         self.canvas = tk.Canvas(
             self.root,
-            width=self.cell_size * self.board_size,
-            height=self.cell_size * self.board_size,
+            width=canvas_size,
+            height=canvas_size,
         )
-        self.canvas.bind("<Button-1>", lambda event: bind_function(event))
+        self.canvas.bind("<Button-1>", lambda event: self._update(event))
         self.canvas.pack()
-        self.draw(board_data)
 
-    def draw(self, board_data: BoardData) -> None:
+        self.draw()
+        self.root.mainloop()
+
+    def _get_player_color(self, player: Player) -> str:
+        if player == Player.FIRST:
+            return "Black"
+        elif player == Player.SECOND:
+            return "White"
+        else:
+            return "Green"
+
+    def _update(self, event) -> None:
+        if not self.othello_service.can_continue_game():
+            pass
+
+        player = self.othello_service.get_next_player()
+        position = self._convert_board_position(event)
+        self.othello_service.update_game(MoveData(player, position))
+        self.draw()
+
+    def draw(self) -> None:
+        next_player = self.othello_service.get_next_player()
+        board_data = self.othello_service.get_board_data()
+        self.label.config(text=f"Next: {self._get_player_color(next_player)}")
+
         for i in range(self.board_size):
             for j in range(self.board_size):
-                x1 = i * self.cell_size
-                y1 = j * self.cell_size
-                x2 = x1 + self.cell_size
-                y2 = y1 + self.cell_size
+                x1 = i * self.CELL_SIZE
+                y1 = j * self.CELL_SIZE
+                x2 = x1 + self.CELL_SIZE
+                y2 = y1 + self.CELL_SIZE
 
                 self.canvas.create_rectangle(x1, y1, x2, y2, fill="green")
 
                 player = board_data.pieces[i][j]
-                if player == Player.FIRST:
-                    self._draw_piece(x1, y1, "black")
-                elif player == Player.SECOND:
-                    self._draw_piece(x1, y1, "white")
+                if player.is_none():
+                    continue
+                self._draw_piece(x1, y1, self._get_player_color(player))
 
     def _draw_piece(self, x, y, color):
         padding = 10
         self.canvas.create_oval(
             x + padding,
             y + padding,
-            x + self.cell_size - padding,
-            y + self.cell_size - padding,
+            x + self.CELL_SIZE - padding,
+            y + self.CELL_SIZE - padding,
             fill=color,
         )
 
-    def convert_board_position(self, click_event) -> Position:
+    def _convert_board_position(self, click_event) -> Position:
         return Position(
-            int(click_event.x / self.cell_size), int(click_event.y / self.cell_size)
+            int(click_event.x / self.CELL_SIZE), int(click_event.y / self.CELL_SIZE)
         )
