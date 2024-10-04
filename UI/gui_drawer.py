@@ -7,12 +7,23 @@ from Domain.Model.position import Position
 
 
 class GUIDrawer(Drawer):
-    CELL_SIZE = 80
-    TEXT_AREA_SIZE = 100
+    PLAYER_COLOR = {
+        Player.FIRST: "Black",
+        Player.SECOND: "White",
+        Player.NONE: "Green",
+    }
 
-    def __init__(self, root: tk.Tk, othello_service: OthelloService) -> None:
+    def __init__(
+        self,
+        root: tk.Tk,
+        othello_service: OthelloService,
+        cell_size: int = 80,
+        text_area_size: int = 100,
+    ) -> None:
         self.root = root
         self.othello_service = othello_service
+        self.CELL_SIZE = cell_size
+        self.TEXT_AREA_SIZE = text_area_size
 
         board_data = self.othello_service.get_board_data()
         geometry_width = board_data.size * self.CELL_SIZE
@@ -20,7 +31,6 @@ class GUIDrawer(Drawer):
         self.root.geometry(f"{geometry_width}x{geometry_height}")
 
         self.label = tk.Label(self.root, text="Initialize", font=("Arial", 40))
-        self.label.pack()
 
         canvas_size = geometry_width
         self.canvas = tk.Canvas(
@@ -28,38 +38,43 @@ class GUIDrawer(Drawer):
             width=canvas_size,
             height=canvas_size,
         )
-        self.canvas.bind("<Button-1>", lambda event: self._update(event))
-        self.canvas.pack()
+        self.canvas.bind("<Button-1>", self._update)
+
+        self.label.grid(row=0, column=0, sticky="nsew")
+        self.canvas.grid(row=1, column=0, sticky="nsew")
 
         self.draw()
         self.root.mainloop()
 
-    def _get_player_color(self, player: Player) -> str:
-        if player == Player.FIRST:
-            return "Black"
-        elif player == Player.SECOND:
-            return "White"
-        else:
-            return "Green"
-
     def _update(self, event: tk.Event) -> None:
-        if not self.othello_service.can_continue_game():
+        if not self._is_game_continuable():
             return
 
+        self._perform_move(event)
+
+        if not self._is_game_continuable():
+            self._end_game()
+        else:
+            self.draw()
+
+    def _is_game_continuable(self) -> bool:
+        return self.othello_service.can_continue_game()
+
+    def _perform_move(self, event: tk.Event) -> None:
         player = self.othello_service.get_next_player()
         position = self._convert_board_position(event)
         self.othello_service.update_game(MoveData(player, position))
 
-        if not self.othello_service.can_continue_game():
-            self.draw()
-            self.label.config(text=f"Game is end.")
-        else:
-            self.draw()
+    def _end_game(self) -> None:
+        self.draw()
+        self.label.config(text="Game is end.")
 
     def draw(self) -> None:
+        self.canvas.delete("all")
+
         next_player = self.othello_service.get_next_player()
         board_data = self.othello_service.get_board_data()
-        self.label.config(text=f"Next: {self._get_player_color(next_player)}")
+        self.label.config(text=f"Next: {self.PLAYER_COLOR[next_player]}")
 
         for i in range(board_data.size):
             for j in range(board_data.size):
@@ -73,7 +88,7 @@ class GUIDrawer(Drawer):
                 player = board_data.pieces[i][j]
                 if player.is_none():
                     continue
-                self._draw_piece(x1, y1, self._get_player_color(player))
+                self._draw_piece(x1, y1, self.PLAYER_COLOR[player])
 
     def _draw_piece(self, x, y, color):
         padding = 10
