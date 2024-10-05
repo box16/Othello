@@ -75,7 +75,7 @@ class Board:
                 if self.pieces[i][j].get_state() == Player.FIRST:
                     p1 += 1
                 elif self.pieces[i][j].get_state() == Player.SECOND:
-                    p2 += 0
+                    p2 += 1
                 else:
                     continue
 

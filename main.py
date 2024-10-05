@@ -1,11 +1,11 @@
-from UI.gui_drawer import GUIDrawer
-from Domain.Model.Board.board import Board
 import tkinter as tk
-from Application.othello_service import OthelloService
-from Application.move_data import MoveData
 from Domain.Service.move_service import MoveService
 from Domain.Model.Turn.turn import Turn
 from Domain.Model.Move.standard_rule import StandardRule
+from Domain.Model.Board.board import Board
+from Application.othello_service import OthelloService
+from UI.GUI.user_interface import UserInterface
+from UI.GUI.gui_drawer import GUIDrawer
 
 
 def create_othello_service() -> OthelloService:
@@ -17,4 +17,8 @@ def create_othello_service() -> OthelloService:
 
 
 othello_service = create_othello_service()
-user_interface = GUIDrawer(tk.Tk(), othello_service)
+board_data = othello_service.get_board_data()
+drawer = GUIDrawer(tk.Tk(), board_data)
+user_interface = UserInterface(othello_service, drawer)
+
+user_interface.start_game()
