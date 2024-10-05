@@ -27,6 +27,9 @@ class OthelloService:
     def get_board_data(self) -> BoardData:
         return BoardData(self.board)
 
+    def get_player_more_pieces(self) -> Player:
+        return self.board.get_player_more_pieces()
+
     def update_game(self, move_data: MoveData) -> None:
         move = Move(move_data.player, move_data.position)
         if not self.move_service.is_valid_move(move):

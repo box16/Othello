@@ -66,3 +66,22 @@ class Board:
                     break
                 self._flip(target_position)
                 length += 1
+
+    def get_player_more_pieces(self) -> Player:
+        p1 = 0
+        p2 = 0
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.pieces[i][j].get_state() == Player.FIRST:
+                    p1 += 1
+                elif self.pieces[i][j].get_state() == Player.SECOND:
+                    p2 += 0
+                else:
+                    continue
+
+        if p2 < p1:
+            return Player.FIRST
+        elif p1 < p2:
+            return Player.SECOND
+        else:
+            return Player.NONE

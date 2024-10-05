@@ -67,7 +67,11 @@ class GUIDrawer(Drawer):
 
     def _end_game(self) -> None:
         self.draw()
-        self.label.config(text="Game is end.")
+        winner = self.othello_service.get_player_more_pieces()
+        if winner == Player.NONE:
+            self.label.config(text=f"Draw")
+        else:
+            self.label.config(text=f"Winner : {self.PLAYER_COLOR[winner]}")
 
     def draw(self) -> None:
         self.canvas.delete("all")
