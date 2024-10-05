@@ -7,7 +7,7 @@ from UI.draw_data import DrawData
 from UI.GUI.player_color import PLAYER_COLOR
 
 
-class GUIDrawer(Drawer):
+class TkinterDrawer(Drawer):
     def __init__(
         self,
         root: tk.Tk,

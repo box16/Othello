@@ -3,13 +3,13 @@ from Domain.Model.player import Player
 from Application.othello_service import OthelloService
 from Application.move_data import MoveData
 from UI.draw_data import DrawData
-from UI.GUI.gui_drawer import GUIDrawer
+from UI.GUI.tkinter_drawer import TkinterDrawer
 from UI.GUI.player_color import PLAYER_COLOR
 
 
-class UserInterface:
+class TkinterInterface:
 
-    def __init__(self, othello_service: OthelloService, drawer: GUIDrawer) -> None:
+    def __init__(self, othello_service: OthelloService, drawer: TkinterDrawer) -> None:
         self.othello_service = othello_service
         self.drawer = drawer
         self.drawer.bind(self.update_game)
