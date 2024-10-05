@@ -4,8 +4,8 @@ from Domain.Model.Turn.turn import Turn
 from Domain.Model.Move.standard_rule import StandardRule
 from Domain.Model.Board.board import Board
 from Application.othello_service import OthelloService
-from UI.GUI.tkinter_interface import TkinterInterface
-from UI.GUI.tkinter_drawer import TkinterDrawer
+from UI.CUI.cui_drawer import CUIDrawer
+from UI.CUI.cui_interface import CUIInterface
 
 
 def create_othello_service() -> OthelloService:
@@ -18,7 +18,7 @@ def create_othello_service() -> OthelloService:
 
 othello_service = create_othello_service()
 board_data = othello_service.get_board_data()
-drawer = TkinterDrawer(tk.Tk(), board_data)
-user_interface = TkinterInterface(othello_service, drawer)
+drawer = CUIDrawer()
+user_interface = CUIInterface(othello_service, drawer)
 
 user_interface.start_game()
